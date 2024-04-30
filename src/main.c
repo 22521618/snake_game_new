@@ -23,28 +23,6 @@
 #define CLK_PIN 14
 
 #define TURN_INTERVAL_MS 750
-static const uint64_t symbols[] = {
-
-    0x007e0018244a7e08, // digits 0-9
-    0x10207e005a5a5a7e,
-    0x0042423c007e2010,
-    0x50503e007c02027c,
-    0x00344a4a7e00003e,
-    0x207e001e3050301e,
-    0x002800007e040810,
-    0x3c66663e06663c00,
-    0x1818183030667e00,
-    0x3c66663c66663c00,
-    0x3c66607c66663c00,
-
-    0x383838fe7c381000, // arrow up
-    0x10387cfe38383800, // arrow down
-    0x10307efe7e301000, // arrow right
-    0x1018fcfefc181000  // arrow left
-
-};
-
-static const size_t symbols_size = sizeof(symbols) - sizeof(uint64_t) * CASCADE_SIZE;
 
 static max7219_t dev = {
     .cascade_size = CASCADE_SIZE,
@@ -66,11 +44,64 @@ void init()
     ESP_ERROR_CHECK(max7219_init_desc(&dev, HOST, MAX7219_MAX_CLOCK_SPEED_HZ, CS_PIN));
     ESP_ERROR_CHECK(max7219_init(&dev));
 }
-void task(void *pvParameter)
+void task(int length)
 {
+    // void *pvParameter
+    uint64_t symbols[] = {
+
+        0x007e0018244a7e08, // digits 0-9
+        0x10207e005a5a5a7e,
+        0x0042423c007e2010,
+        0x50503e007c02027c,
+        0x00344a4a7e00003e,
+        0x207e001e3050301e,
+        0x002800007e040810, // :
+        0x002800007e040810};
+    if (length == 2)
+    {
+        symbols[7] = 0x0062f2928ace4600;
+    }
+    else if (length == 3)
+    {
+        symbols[7] = 0x006cfe9292c64400;
+    }
+    else if (length == 4)
+    {
+        symbols[7] = 0x0008fefe48281800;
+    }
+    else if (length == 5)
+    {
+        symbols[7] = 0x009cbea2a2e6e400;
+    }
+    else if (length == 6)
+    {
+        symbols[7] = 0x004cde9292fe7c00;
+    }
+    else if (length == 7)
+    {
+        symbols[7] = 0x00c0f0be8ec0c000;
+    }
+    else if (length == 8)
+    {
+        symbols[7] = 0x006c9292926c0000;
+    }
+    else if (length == 9)
+    {
+        symbols[7] = 0x007effc9c9fb7200;
+    }
+    else if (length == 10)
+    {
+        symbols[7] = 0x003c42423c007e20;
+    }
+    else if (length == 11)
+    {
+        symbols[7] = 0x0000007e20007e20;
+    }
+
+    size_t symbols_size = sizeof(symbols) - sizeof(uint64_t) * CASCADE_SIZE;
     size_t offs = 0;
     int k;
-    for (k = 0; k <= 49; k++)
+    for (k = 0; k <= 55; k++)
     {
         for (uint8_t i = 0; i < CASCADE_SIZE; i++)
             max7219_draw_image_8x8(&dev, i * 8, (uint8_t *)symbols + i * 8 + offs);
@@ -212,7 +243,6 @@ void game_over(max7219_t *dev)
         // as before, sadface[0] is unused, using 1-8
     };
     max7219_render(dev, sadface);
-    xTaskCreatePinnedToCore(task, "task", configMINIMAL_STACK_SIZE * 3, NULL, 5, NULL, APP_CPU_NUM);
 }
 void app_main()
 {
@@ -302,8 +332,10 @@ void app_main()
         }
 
         // show game over sadface for 3 s, then restart
-        game_over(&dev);
+        //
+        // xTaskCreatePinnedToCore(task, "task", configMINIMAL_STACK_SIZE * 3, NULL, 5, NULL, APP_CPU_NUM);
+        task(snake.length);
 
-               vTaskDelay(10000 / portTICK_PERIOD_MS);
+        vTaskDelay(1000 / portTICK_PERIOD_MS);
     }
 }
