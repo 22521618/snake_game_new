@@ -97,6 +97,82 @@ void task(int length)
     {
         symbols[7] = 0x0000007e20007e20;
     }
+    else if (length == 12)
+    {
+        symbols[7] = 0xf191919f00ff2010;
+    }
+    else if (length == 13)
+    {
+        symbols[7] = 0xff91919100ff2010;
+    }
+    else if (length == 14)
+    {
+        symbols[7] = 0xff48281800ff2010;
+    }
+    else if (length == 15)
+    {
+        symbols[7] = 0x9f9191f100ff2010;
+    }
+    else if (length == 16)
+    {
+        symbols[7] = 0x9f9191ff00ff2010;
+    }
+    else if (length == 17)
+    {
+        symbols[7] = 0xff80808000ff2010;
+    }
+    else if (length == 18)
+    {
+        symbols[7] = 0xff9191ff00ff2010;
+    }
+    else if (length == 19)
+    {
+        symbols[7] = 0xff9191f100ff2010;
+    }
+    else if (length == 20)
+    {
+        symbols[7] = 0x007c447c0074545c;
+    }
+    else if (length == 21)
+    {
+        symbols[7] = 0x007c20100074545c;
+    }
+    else if (length == 22)
+    {
+        symbols[7] = 0x0074545c0074545c;
+    }
+    else if (length == 23)
+    {
+        symbols[7] = 0x007c54540074545c;
+    }
+    else if (length == 24)
+    {
+        symbols[7] = 0x007c28180074545c;
+    }
+    else if (length == 25)
+    {
+        symbols[7] = 0x005c54740074545c;
+    }
+    else if (length == 26)
+    {
+        symbols[7] = 0x005c547c0074545c;
+    }
+    else if (length == 27)
+    {
+        symbols[7] = 0x007c40400074545c;
+    }
+    else if (length == 28)
+    {
+        symbols[7] = 0x007c547c0074545c;
+    }
+    else if (length == 29)
+    {
+        symbols[7] = 0x007c54740074545c;
+    }
+    else if (length == 30)
+    {
+        symbols[7] = 0x007c447c007c5454;
+    }
 
     size_t symbols_size = sizeof(symbols) - sizeof(uint64_t) * CASCADE_SIZE;
     size_t offs = 0;
